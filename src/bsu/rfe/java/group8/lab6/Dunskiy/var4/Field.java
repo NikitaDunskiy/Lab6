@@ -47,9 +47,10 @@ public class Field extends JPanel {
 // BouncingBall выполняет сам в конструкторе
         balls.add(new BouncingBall(this));
     }
+
     public synchronized void stopGreenBall(){
         for (BouncingBall ball : balls){
-            if (ball.getSize()<10){
+            if (ball.getG()> ball.getR() + ball.getB()){
                 ball.stopGreen();
             }
         }
@@ -57,11 +58,12 @@ public class Field extends JPanel {
 
     public synchronized void resumeGreenBall(){
         for (BouncingBall ball : balls){
-            if (ball.getSize()<10){
+            if (ball.getG()> ball.getR() + ball.getB()){
                 ball.resumeGreen();
             }
         }
     }
+
     // Метод синхронизированный, т.е. только один поток может
 // одновременно быть внутри
     public synchronized void pause() {

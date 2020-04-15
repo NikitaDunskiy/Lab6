@@ -3,6 +3,7 @@ package bsu.rfe.java.group8.lab6.Dunskiy.var4;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
+
 public class BouncingBall implements Runnable {
     // Максимальный радиус, который может иметь мяч
     private static final int MAX_RADIUS = 40;
@@ -20,22 +21,20 @@ public class BouncingBall implements Runnable {
     private int speed;
     private double speedX;
     private double speedY;
-    private Double speedXg = null;
-    private Double speedYg = null;
+    private Double speedXor = null;
+    private Double speedYor = null;
     private boolean isGreen = false;
     float r = (float)Math.random();
     float g = (float)Math.random();
     float b = (float)Math.random();
-
     // Конструктор класса BouncingBall
     public BouncingBall(Field field) {
 // Необходимо иметь ссылку на поле, по которому прыгает мяч,
 // чтобы отслеживать выход за его пределы
-// через getWidth(), getHeight()
+        // через getWidth(), getHeight()
         this.field = field;
 // Радиус мяча случайного размера
-        radius = new Double(Math.random()*(MAX_RADIUS -
-                MIN_RADIUS)).intValue() + MIN_RADIUS;
+        radius = new Double(Math.random()*(MAX_RADIUS - MIN_RADIUS)).intValue() + MIN_RADIUS;
 // Абсолютное значение скорости зависит от диаметра мяча,
 // чем он больше, тем медленнее
         speed = new Double(Math.round(5*MAX_SPEED / radius)).intValue();
@@ -49,13 +48,6 @@ public class BouncingBall implements Runnable {
         speedX = 3*Math.cos(angle);
         speedY = 3*Math.sin(angle);
 // Цвет мяча выбирается случайно
-       // float r = (float)Math.random();
-      //  float g = (float)Math.random();
-      //  float b = (float)Math.random();
-
-
-       // color = new Color((float)Math.random(), (float)Math.random(),
-       //         (float)Math.random());
         color = new Color(r, g, b);
 // Начальное положение мяча случайно
         x = Math.random()*(field.getSize().getWidth()-2*radius) + radius;
@@ -68,24 +60,29 @@ public class BouncingBall implements Runnable {
     }
 
     public void stopGreen(){
-        if (g > r + b)
-            isGreen = true;
-        speedYg = speedY;
-        speedXg = speedX;
+        isGreen = true;
+        speedYor = speedY;
+        speedXor = speedX;
         speedX = 0;
         speedY = 0;
     }
 
     public void resumeGreen(){
-       if (g < r + b)
-            isGreen = false;
-        speedX = speedXg;
-        speedY = speedYg;
+        isGreen = false;
+        speedX = speedXor;
+        speedY = speedYor;
     }
 
-    public int getSize(){
-        return radius;
+    public float getR(){
+        return r;
     }
+    public float getG(){
+        return g;
+    }
+    public float getB(){
+        return b;
+    }
+
     // Метод run() исполняется внутри потока. Когда он завершает работу,
 // то завершается и поток
     public void run() {
@@ -133,7 +130,6 @@ public class BouncingBall implements Runnable {
 // и просто выходим (завершаемся)
         }
     }
-
     // Метод прорисовки самого себя
     public void paint(Graphics2D canvas) {
         canvas.setColor(color);
