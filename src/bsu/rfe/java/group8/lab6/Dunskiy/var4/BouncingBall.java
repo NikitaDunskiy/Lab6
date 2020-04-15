@@ -20,6 +20,13 @@ public class BouncingBall implements Runnable {
     private int speed;
     private double speedX;
     private double speedY;
+    private Double speedXg = null;
+    private Double speedYg = null;
+    private boolean isGreen = false;
+    float r = (float)Math.random();
+    float g = (float)Math.random();
+    float b = (float)Math.random();
+
     // Конструктор класса BouncingBall
     public BouncingBall(Field field) {
 // Необходимо иметь ссылку на поле, по которому прыгает мяч,
@@ -42,8 +49,14 @@ public class BouncingBall implements Runnable {
         speedX = 3*Math.cos(angle);
         speedY = 3*Math.sin(angle);
 // Цвет мяча выбирается случайно
-        color = new Color((float)Math.random(), (float)Math.random(),
-                (float)Math.random());
+       // float r = (float)Math.random();
+      //  float g = (float)Math.random();
+      //  float b = (float)Math.random();
+
+
+       // color = new Color((float)Math.random(), (float)Math.random(),
+       //         (float)Math.random());
+        color = new Color(r, g, b);
 // Начальное положение мяча случайно
         x = Math.random()*(field.getSize().getWidth()-2*radius) + radius;
         y = Math.random()*(field.getSize().getHeight()-2*radius) + radius;
@@ -52,6 +65,26 @@ public class BouncingBall implements Runnable {
         Thread thisThread = new Thread(this);
 // Запускаем поток
         thisThread.start();
+    }
+
+    public void stopGreen(){
+        if (g > r + b)
+            isGreen = true;
+        speedYg = speedY;
+        speedXg = speedX;
+        speedX = 0;
+        speedY = 0;
+    }
+
+    public void resumeGreen(){
+       if (g < r + b)
+            isGreen = false;
+        speedX = speedXg;
+        speedY = speedYg;
+    }
+
+    public int getSize(){
+        return radius;
     }
     // Метод run() исполняется внутри потока. Когда он завершает работу,
 // то завершается и поток
