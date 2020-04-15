@@ -17,6 +17,8 @@ public class MainFrame extends JFrame {
     private static final int HEIGHT = 500;
     private JMenuItem pauseMenuItem;
     private JMenuItem resumeMenuItem;
+    private JMenuItem pauseGreenMenuItem;
+    private JMenuItem resumeGreenTenMenuItem;
     // Поле, по которому прыгают мячи
     private Field field = new Field();
     // Конструктор главного окна приложения
@@ -67,6 +69,7 @@ public class MainFrame extends JFrame {
         };
         resumeMenuItem = controlMenu.add(resumeAction);
         resumeMenuItem.setEnabled(false);
+        
 // Добавить в центр граничной компоновки поле Field
         getContentPane().add(field, BorderLayout.CENTER);
     }
