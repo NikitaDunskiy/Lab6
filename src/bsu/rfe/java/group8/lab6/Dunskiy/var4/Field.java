@@ -51,7 +51,7 @@ public class Field extends JPanel {
     public synchronized void stopGreenBall(){
         for (BouncingBall ball : balls){
             if (ball.getG()> ball.getR() + ball.getB()){
-                ball.stopGreen();
+                pause();
             }
         }
     }
@@ -59,7 +59,7 @@ public class Field extends JPanel {
     public synchronized void resumeGreenBall(){
         for (BouncingBall ball : balls){
             if (ball.getG()> ball.getR() + ball.getB()){
-                ball.resumeGreen();
+                resume();
             }
         }
     }
@@ -82,11 +82,12 @@ public class Field extends JPanel {
 // (не включен ли режим паузы?)
     public synchronized void canMove(BouncingBall ball) throws
             InterruptedException {
-        if (paused) {
+        if (paused && ball.getG()> ball.getR() + ball.getB()) {
 // Если режим паузы включен, то поток, зашедший
 // внутрь данного метода, засыпает
             wait();
         }
     }
 }
+
 

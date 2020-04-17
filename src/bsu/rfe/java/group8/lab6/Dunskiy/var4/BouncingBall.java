@@ -21,9 +21,8 @@ public class BouncingBall implements Runnable {
     private int speed;
     private double speedX;
     private double speedY;
-    private Double speedXor = null;
-    private Double speedYor = null;
-    private boolean isGreen = false;
+    private Double speedXG = null;
+    private Double speedYG = null;
     float r = (float)Math.random();
     float g = (float)Math.random();
     float b = (float)Math.random();
@@ -59,18 +58,16 @@ public class BouncingBall implements Runnable {
         thisThread.start();
     }
 
-    public void stopGreen(){
-        isGreen = true;
-        speedYor = speedY;
-        speedXor = speedX;
+    public synchronized void stopGreen(){
+        speedYG = speedY;
+        speedXG = speedX;
         speedX = 0;
         speedY = 0;
     }
 
-    public void resumeGreen(){
-        isGreen = false;
-        speedX = speedXor;
-        speedY = speedYor;
+    public synchronized void resumeGreen(){
+        speedX = speedXG;
+        speedY = speedYG;
     }
 
     public float getR(){
@@ -95,25 +92,26 @@ public class BouncingBall implements Runnable {
 // возвращено в метод
 // В противном случае - активный поток заснѐт
                 field.canMove(this);
-                if (x + speedX <= radius) {
+
+                if (x + speedX  <= 2*radius) {
 // Достигли левой стенки, отскакиваем право
                     speedX = -speedX;
-                    x = radius;
+                    x = 2*radius;
                 } else
-                if (x + speedX >= field.getWidth() - radius) {
+                if (x + speedX>= field.getWidth() - 2*radius ) {
 // Достигли правой стенки, отскок влево
                     speedX = -speedX;
-                    x=new Double(field.getWidth()-radius).intValue();
+                    x=new Double(field.getWidth()-2*radius).intValue();
                 } else
-                if (y + speedY <= radius) {
+                if (y + speedY <= 2*radius) {
 // Достигли верхней стенки
                     speedY = -speedY;
-                    y = radius;
+                    y = 2*radius;
                 } else
-                if (y + speedY >= field.getHeight() - radius) {
+                if (y + speedY >= field.getHeight() - 2*radius) {
 // Достигли нижней стенки
                     speedY = -speedY;
-                    y=new Double(field.getHeight()-radius).intValue();
+                    y=new Double(field.getHeight()-2*radius).intValue();
                 } else {
 // Просто смещаемся
                     x += speedX;
